@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant math: a $30 minimum wage and the tip credit</title>
+<link rel="stylesheet" href="https://use.typekit.net/qqk2vto.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  .rtm {
+    --vc-black: #050507;
+    --vc-white: #ffffff;
+    --vc-cloud: #dddddd;
+    --vc-chartreuse: #dde44c;
+    --vc-orange: #ff7c53;
+    --vc-orange-20: #fde5dd;
+    --vc-orange-50: #fabcaa;
+    --vc-magenta: #e7466d;
+    --vc-charcoal: #707175;
+    --vc-periwinkle: #9b9fbc;
+    --vc-indigo: #394882;
+    --vc-cerulean: #217ebe;
+    --vc-baddest-red: #d2232a;
+
+    --vc-font-sans: "halyard-text", "Inter", "Helvetica Neue", Arial, sans-serif;
+    --vc-font-serif: "GascogneTS", "Source Serif 4", Georgia, "Times New Roman", serif;
+
+    --track-kicker: 0.08em;
+    --track-caps: 0.04em;
+
+    max-width: 720px;
+    margin: 0 auto;
+    font-family: var(--vc-font-sans);
+    color: var(--vc-black);
+    font-weight: 300;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    background: var(--vc-white);
+    font-size: 16px;
+  }
+  .rtm *, .rtm *::before, .rtm *::after { box-sizing: border-box; }
+
+  /* ===== Card shell ===== */
+  .rtm .card {
+    border: 2px solid var(--vc-black);
+    background: var(--vc-white);
+    padding: 28px 28px 26px;
+    margin: 0 0 18px;
+  }
+  .rtm .card.dark {
+    background: var(--vc-black);
+    color: var(--vc-white);
+    border-color: var(--vc-black);
+  }
+  .rtm .card.dark .muted { color: var(--vc-periwinkle); }
+
+  /* ===== Typography ===== */
+  .rtm .kicker {
+    font-family: var(--vc-font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: var(--track-kicker);
+    text-transform: uppercase;
+    color: var(--vc-charcoal);
+    margin: 0 0 10px;
+  }
+  .rtm .card.dark .kicker { color: var(--vc-chartreuse); }
+  .rtm h2.hed {
+    font-family: var(--vc-font-serif);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3.4vw, 1.95rem);
+    line-height: 1.12;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+  .rtm h3.subhed {
+    font-family: var(--vc-font-sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  .rtm p { margin: 0 0 12px; font-size: 0.96rem; }
+  .rtm p:last-child { margin-bottom: 0; }
+  .rtm .muted { color: var(--vc-charcoal); font-size: 0.85rem; line-height: 1.45; }
+  .rtm .rule { border: 0; border-top: 1px solid var(--vc-cloud); margin: 18px 0; }
+  .rtm .card.dark .rule { border-top-color: #2a2a2e; }
+
+  /* Intro / outro standalone text */
+  .rtm .intro {
+    border: 0;
+    padding: 4px 4px 0;
+    margin-bottom: 16px;
+  }
+  .rtm .intro .hed { font-size: clamp(1.7rem, 3.8vw, 2.25rem); }
+
+  /* ===== Cost-structure stacked bars ===== */
+  .rtm .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .rtm .compare-col h4 {
+    font-family: var(--vc-font-sans);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: var(--track-kicker);
+    text-transform: uppercase;
+    margin: 0 0 6px;
+    color: var(--vc-charcoal);
+  }
+  .rtm .compare-col .bottomline {
+    font-family: var(--vc-font-serif);
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 1.1;
+    margin: 6px 0 12px;
+  }
+  .rtm .compare-col .bottomline.bad { color: var(--vc-baddest-red); }
+  .rtm .stack {
+    display: flex;
+    width: 100%;
+    height: 44px;
+    border: 1.5px solid var(--vc-black);
+    overflow: hidden;
+  }
+  .rtm .stack span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--vc-black);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: var(--track-caps);
+    border-right: 1px solid rgba(0,0,0,0.18);
+    overflow: hidden;
+  }
+  .rtm .stack span:last-child { border-right: 0; }
+  .rtm .stack .seg-fb     { background: var(--vc-periwinkle); }
+  .rtm .stack .seg-labor  { background: var(--vc-orange); }
+  .rtm .stack .seg-rent   { background: var(--vc-cerulean); color: var(--vc-white); }
+  .rtm .stack .seg-other  { background: var(--vc-cloud); }
+  .rtm .stack .seg-profit { background: var(--vc-chartreuse); }
+  .rtm .stack .seg-loss   { background: var(--vc-baddest-red); color: var(--vc-white); }
+  .rtm .stack span.tiny { font-size: 0; }
+
+  .rtm .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-top: 10px;
+    font-size: 11px;
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    color: var(--vc-charcoal);
+    font-weight: 700;
+  }
+  .rtm .legend i {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    vertical-align: -1px;
+    border: 1px solid var(--vc-black);
+  }
+  .rtm .sw-fb { background: var(--vc-periwinkle); }
+  .rtm .sw-labor { background: var(--vc-orange); }
+  .rtm .sw-rent { background: var(--vc-cerulean); }
+  .rtm .sw-other { background: var(--vc-cloud); }
+  .rtm .sw-profit { background: var(--vc-chartreuse); }
+  .rtm .sw-loss { background: var(--vc-baddest-red); }
+
+  /* ===== Big-number swing ===== */
+  .rtm .swing {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 6px;
+  }
+  .rtm .swing .col { text-align: center; }
+  .rtm .swing .lbl {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--track-kicker);
+    color: var(--vc-charcoal);
+    margin-bottom: 6px;
+  }
+  .rtm .swing .num {
+    font-family: var(--vc-font-serif);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .rtm .swing .num.bad { color: var(--vc-baddest-red); }
+  .rtm .swing .arrow {
+    font-family: var(--vc-font-sans);
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--vc-orange);
+  }
+  .rtm .swing .sub {
+    font-size: 0.82rem;
+    color: var(--vc-charcoal);
+    margin-top: 4px;
+  }
+
+  /* ===== Closing-the-gap dishes ===== */
+  .rtm .dish-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .rtm .dish {
+    border: 1.5px solid var(--vc-black);
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 14px;
+    align-items: center;
+    background: var(--vc-white);
+  }
+  .rtm .dish .icon {
+    width: 56px;
+    height: 56px;
+    border: 1.5px solid var(--vc-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--vc-orange-20);
+    font-size: 28px;
+  }
+  .rtm .dish .name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    color: var(--vc-charcoal);
+    margin-bottom: 2px;
+  }
+  .rtm .dish .qty {
+    font-family: var(--vc-font-serif);
+    font-weight: 700;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--vc-black);
+  }
+  .rtm .dish .qty em {
+    font-style: normal;
+    color: var(--vc-orange);
+  }
+  .rtm .dish .annual {
+    font-size: 0.82rem;
+    color: var(--vc-charcoal);
+    margin-top: 4px;
+  }
+
+  /* ===== Check comparison ===== */
+  .rtm .check-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .rtm .check {
+    border: 1.5px solid var(--vc-black);
+    padding: 18px 16px;
+    background: var(--vc-white);
+    position: relative;
+    text-align: center;
+  }
+  .rtm .check.after {
+    background: var(--vc-orange-20);
+    border-color: var(--vc-orange);
+  }
+  .rtm .check .when {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--track-kicker);
+    color: var(--vc-charcoal);
+    margin-bottom: 8px;
+  }
+  .rtm .check .amount {
+    font-family: var(--vc-font-serif);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 7vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .rtm .check.after .amount { color: var(--vc-orange); }
+  .rtm .check .note {
+    font-size: 0.8rem;
+    color: var(--vc-charcoal);
+    margin-top: 8px;
+  }
+
+  /* ===== Options grid ===== */
+  .rtm .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .rtm .opt {
+    border: 1.5px solid var(--vc-black);
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--vc-white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .rtm .opt .dot {
+    width: 10px;
+    height: 10px;
+    background: var(--vc-orange);
+    flex: 0 0 10px;
+  }
+
+  /* ===== Jobs at risk ===== */
+  .rtm .jobs {
+    text-align: center;
+    padding: 6px 0 0;
+  }
+  .rtm .jobs .bignum {
+    font-family: var(--vc-font-serif);
+    font-weight: 700;
+    font-size: clamp(2.8rem, 10vw, 4.4rem);
+    line-height: 1;
+    color: var(--vc-chartreuse);
+    letter-spacing: -0.02em;
+  }
+  .rtm .jobs .label {
+    font-size: 0.95rem;
+    color: var(--vc-white);
+    margin-top: 10px;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ===== Methodology disclosure ===== */
+  .rtm details {
+    border-top: 1px solid var(--vc-cloud);
+    padding-top: 14px;
+    margin-top: 14px;
+  }
+  .rtm details summary {
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: var(--track-kicker);
+    text-transform: uppercase;
+    color: var(--vc-charcoal);
+    list-style: none;
+  }
+  .rtm details summary::-webkit-details-marker { display: none; }
+  .rtm details summary::after {
+    content: " +";
+    color: var(--vc-orange);
+    font-weight: 700;
+  }
+  .rtm details[open] summary::after { content: " \2212"; }
+  .rtm details .body {
+    margin-top: 12px;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: var(--vc-charcoal);
+  }
+  .rtm details .body h5 {
+    font-family: var(--vc-font-sans);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: var(--track-caps);
+    color: var(--vc-black);
+    margin: 14px 0 4px;
+  }
+
+  /* ===== Source line ===== */
+  .rtm .src {
+    font-size: 0.78rem;
+    color: var(--vc-charcoal);
+    margin-top: 12px;
+    line-height: 1.45;
+  }
+
+  /* ===== Responsive ===== */
+  @media (min-width: 560px) {
+    .rtm .compare-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .rtm .dish-row { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    .rtm .card { padding: 22px 18px; }
+    .rtm .check-grid { grid-template-columns: 1fr; }
+    .rtm .options { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="rtm">
+
+  <!-- ============ Intro / framing ============ -->
+  <div class="card intro">
+    <p class="kicker">Restaurant math</p>
+    <h2 class="hed">What a $30 minimum wage and the end of the tip credit could mean for a New York City full-service restaurant</h2>
+    <p class="muted">The figures below model a representative full-service restaurant in New York City. They are illustrative — not the books of any single business — and are meant to show the directional impact of a fully phased-in $30 hourly minimum wage paired with elimination of the tip credit.</p>
+  </div>
+
+  <!-- ============ Card 1: Cost structure compare ============ -->
+  <div class="card">
+    <p class="kicker">Card 1 · Cost structure as a share of revenue</p>
+    <h2 class="hed">A 5% margin becomes a 19% loss</h2>
+
+    <div class="compare-grid">
+      <div class="compare-col">
+        <h4>Today</h4>
+        <div class="bottomline">Profit: <strong>+5%</strong></div>
+        <div class="stack" aria-label="Today's cost structure">
+          <span class="seg-fb"    style="width:31%">31%</span>
+          <span class="seg-labor" style="width:35%">35%</span>
+          <span class="seg-rent"  style="width:10%">10%</span>
+          <span class="seg-other" style="width:19%">19%</span>
+          <span class="seg-profit" style="width:5%" class="tiny">5%</span>
+        </div>
+      </div>
+
+      <div class="compare-col">
+        <h4>Under the proposal</h4>
+        <div class="bottomline bad">Loss: <strong>&#8722;19%</strong></div>
+        <div class="stack" aria-label="Cost structure under the proposal">
+          <span class="seg-fb"    style="width:25.2%">31%</span>
+          <span class="seg-labor" style="width:48.0%">59%</span>
+          <span class="seg-rent"  style="width:8.1%">10%</span>
+          <span class="seg-other" style="width:15.4%">19%</span>
+          <span class="seg-loss"  style="width:15.4%">&#8722;19%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="sw-fb"></i>Food &amp; beverage</span>
+      <span><i class="sw-labor"></i>Labor</span>
+      <span><i class="sw-rent"></i>Rent</span>
+      <span><i class="sw-other"></i>Other operating</span>
+      <span><i class="sw-profit"></i>Profit</span>
+      <span><i class="sw-loss"></i>Loss</span>
+    </div>
+
+    <hr class="rule">
+    <p class="muted">Labor would jump from 35% of revenue to about 59% — enough to flip the bottom line from a thin profit to a deep operating loss. Bars beyond 100% of revenue are scaled proportionally so the full deficit is visible.</p>
+  </div>
+
+  <!-- ============ Card 2: Dollar swing on $2M revenue ============ -->
+  <div class="card">
+    <p class="kicker">Card 2 · A $2 million neighborhood restaurant</p>
+    <h2 class="hed">A $480,000 swing in the bottom line</h2>
+
+    <div class="swing">
+      <div class="col">
+        <div class="lbl">Profit today</div>
+        <div class="num">+$100K</div>
+        <div class="sub">5% of revenue</div>
+      </div>
+      <div class="arrow">&#8594;</div>
+      <div class="col">
+        <div class="lbl">Loss under proposal</div>
+        <div class="num bad">&#8722;$380K</div>
+        <div class="sub">19% of revenue</div>
+      </div>
+    </div>
+
+    <hr class="rule">
+    <p class="muted">For an illustrative restaurant generating $2 million a year, the modeled change in labor costs would erase the existing profit and add a roughly $380,000 annual loss on top of it.</p>
+  </div>
+
+  <!-- ============ Card 3: Closing the gap with dishes ============ -->
+  <div class="card">
+    <p class="kicker">Card 3 · Closing the gap on volume alone</p>
+    <h2 class="hed">It would take 53 to 77 more dishes a day</h2>
+    <p>To recover $480,000 a year through extra sales alone, the kitchen would need to push out, every single day:</p>
+
+    <div class="dish-row">
+      <div class="dish">
+        <div class="icon" aria-hidden="true">&#127837;</div>
+        <div>
+          <div class="name">$17 enchiladas</div>
+          <div class="qty"><em>+77</em> / day</div>
+          <div class="annual">28,235 per year</div>
+        </div>
+      </div>
+      <div class="dish">
+        <div class="icon" aria-hidden="true">&#127828;</div>
+        <div>
+          <div class="name">$22 burgers</div>
+          <div class="qty"><em>+60</em> / day</div>
+          <div class="annual">21,818 per year</div>
+        </div>
+      </div>
+      <div class="dish">
+        <div class="icon" aria-hidden="true">&#127837;</div>
+        <div>
+          <div class="name">$25 pasta dishes</div>
+          <div class="qty"><em>+53</em> / day</div>
+          <div class="annual">19,200 per year</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="rule">
+    <p class="muted">If a restaurant could already attract that much additional traffic without raising prices, it presumably would. Kitchen capacity, staffing, seating and customer demand all impose hard ceilings.</p>
+  </div>
+
+  <!-- ============ Card 4: Menu price impact ============ -->
+  <div class="card">
+    <p class="kicker">Card 4 · Closing the gap on price</p>
+    <h2 class="hed">A $75 check becomes a $93 check</h2>
+    <p>If the gap is closed through menu prices instead of volume, the same dinner check would need to climb about 24% — before sales tax and tip.</p>
+
+    <div class="check-grid">
+      <div class="check">
+        <div class="when">Today</div>
+        <div class="amount">$75</div>
+        <div class="note">Dinner check, pre-tax and tip</div>
+      </div>
+      <div class="check after">
+        <div class="when">Under the proposal</div>
+        <div class="amount">$93</div>
+        <div class="note">+24% to offset labor costs</div>
+      </div>
+    </div>
+
+    <hr class="rule">
+    <p class="muted">According to a James Beard Foundation survey, restaurants that raised menu prices by more than 10% were the most likely to expect lower profits — suggesting price hikes large enough to fully offset the gap may not stick.</p>
+  </div>
+
+  <!-- ============ Card 5: What restaurants would have to do ============ -->
+  <div class="card">
+    <p class="kicker">Card 5 · The operator menu</p>
+    <h2 class="hed">There is no single lever</h2>
+    <p>To preserve current margins, operators would likely need some combination of the following — none of which is costless to workers or guests:</p>
+
+    <div class="options">
+      <div class="opt"><span class="dot"></span>Raise menu prices</div>
+      <div class="opt"><span class="dot"></span>Drive more traffic</div>
+      <div class="opt"><span class="dot"></span>End tipping</div>
+      <div class="opt"><span class="dot"></span>Cut staffing levels</div>
+      <div class="opt"><span class="dot"></span>Reduce operating hours</div>
+      <div class="opt"><span class="dot"></span>Simplify service models</div>
+      <div class="opt" style="grid-column: 1 / -1; border-color: var(--vc-baddest-red); color: var(--vc-baddest-red);"><span class="dot" style="background: var(--vc-baddest-red)"></span>Close permanently</div>
+    </div>
+  </div>
+
+  <!-- ============ Card 6: Jobs at risk ============ -->
+  <div class="card dark">
+    <p class="kicker">Card 6 · Jobs already moving in the wrong direction</p>
+    <h2 class="hed" style="color: var(--vc-white);">Before any new wage floor takes effect</h2>
+
+    <div class="jobs">
+      <div class="bignum">&#8722;7,900</div>
+      <div class="label">Year-over-year change in jobs at restaurants and other eating places in New York City, per the New York State Department of Labor.</div>
+    </div>
+  </div>
+
+  <!-- ============ Methodology ============ -->
+  <div class="card">
+    <details>
+      <summary>How these numbers were calculated</summary>
+      <div class="body">
+        <p>This analysis models a representative New York City full-service restaurant using aggregated staffing and scheduling data from New York City Hospitality Alliance member surveys and publicly available wage benchmarks from Culinary Agents.</p>
+
+        <h5>Labor cost calculations</h5>
+        <p>Total labor costs are derived from staffing levels, weekly hours, wage rates and staffing composition, and annualized to estimate full-year impacts. An estimated 12% labor burden is added to account for payroll taxes, workers&#8217; compensation, unemployment insurance and other wage-linked costs.</p>
+
+        <h5>Wage compression</h5>
+        <p>The model uses a wage compression methodology that reflects likely employer responses to a substantial increase in the minimum wage. All workers currently earning below the modeled floor are raised to at least $30 per hour, with additional adjustments applied to select roles to partially preserve pay differentiation by skill, responsibility, hiring and retention considerations.</p>
+        <p>Tipped front-of-house positions are raised directly to the proposed minimum wage with no further compression adjustment. Non-tipped front-of-house roles receive modest upward adjustments above the new floor. Back-of-house hourly positions preserve a portion of existing differentials relative to entry-level kitchen roles. Management roles receive more limited upward adjustments, reflecting indirect wage pressure rather than full preservation of existing wage ladders.</p>
+
+        <h5>Scenario</h5>
+        <p>The modeled scenario uses the legislation&#8217;s higher wage schedule benchmark of $30 per hour to illustrate the long-term labor cost impact of a fully phased-in policy environment and the eventual elimination of the tip credit. Many independent restaurants may initially fall under the lower wage schedule applicable to smaller employers; the analysis is intended to capture the broader directional impact as wage requirements continue rising over time.</p>
+
+        <h5>What is and isn&#8217;t included</h5>
+        <p>The model reflects employer-paid labor costs only, including estimated payroll taxes and statutory labor burdens. It does not represent the finances of any individual restaurant.</p>
+      </div>
+    </details>
+
+    <p class="src">Sources: New York City Hospitality Alliance member surveys; Culinary Agents wage benchmarks; James Beard Foundation menu pricing survey; New York State Department of Labor, Current Employment Statistics for restaurants and other eating places in New York City.</p>
+  </div>
+
+</div>
+</body>
+</html>
