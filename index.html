@@ -68,11 +68,18 @@
   }
   .rtm .card.dark .kicker { color: var(--vc-chartreuse); }
   .rtm h2.hed {
+    font-family: var(--vc-font-sans);
+    font-weight: 900;
+    font-size: clamp(1.4rem, 3.2vw, 1.85rem);
+    line-height: 1.15;
+    margin: 0 0 14px;
+    letter-spacing: -0.005em;
+  }
+  .rtm h2.hed.display {
     font-family: var(--vc-font-serif);
     font-weight: 600;
-    font-size: clamp(1.5rem, 3.4vw, 1.95rem);
+    font-size: clamp(1.7rem, 3.8vw, 2.25rem);
     line-height: 1.12;
-    margin: 0 0 14px;
     letter-spacing: -0.01em;
   }
   .rtm h3.subhed {
@@ -95,7 +102,6 @@
     padding: 4px 4px 0;
     margin-bottom: 16px;
   }
-  .rtm .intro .hed { font-size: clamp(1.7rem, 3.8vw, 2.25rem); }
 
   /* ===== Cost-structure stacked bars ===== */
   .rtm .compare-grid {
@@ -392,6 +398,12 @@
     margin-top: 12px;
     line-height: 1.45;
   }
+  .rtm .src a {
+    color: var(--vc-charcoal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .rtm .src a:hover { color: var(--vc-orange); }
 
   /* ===== Responsive ===== */
   @media (min-width: 560px) {
@@ -412,14 +424,14 @@
   <!-- ============ Intro / framing ============ -->
   <div class="card intro">
     <p class="kicker">Restaurant math</p>
-    <h2 class="hed">What a $30 minimum wage and the end of the tip credit could mean for a New York City full-service restaurant</h2>
+    <h2 class="hed display">What a $30 minimum wage and the end of the tip credit could mean for a New York City full-service restaurant</h2>
     <p class="muted">The figures below model a representative full-service restaurant in New York City. They are illustrative — not the books of any single business — and are meant to show the directional impact of a fully phased-in $30 hourly minimum wage paired with elimination of the tip credit.</p>
   </div>
 
   <!-- ============ Card 1: Cost structure compare ============ -->
   <div class="card">
-    <p class="kicker">Card 1 · Cost structure as a share of revenue</p>
     <h2 class="hed">A 5% margin becomes a 19% loss</h2>
+    <p class="muted" style="margin-top:-6px; margin-bottom:16px;">Cost structure as a share of revenue.</p>
 
     <div class="compare-grid">
       <div class="compare-col">
@@ -462,8 +474,8 @@
 
   <!-- ============ Card 2: Dollar swing on $2M revenue ============ -->
   <div class="card">
-    <p class="kicker">Card 2 · A $2 million neighborhood restaurant</p>
     <h2 class="hed">A $480,000 swing in the bottom line</h2>
+    <p class="muted" style="margin-top:-6px; margin-bottom:16px;">Modeled for an illustrative $2 million-revenue neighborhood restaurant.</p>
 
     <div class="swing">
       <div class="col">
@@ -485,8 +497,8 @@
 
   <!-- ============ Card 3: Closing the gap with dishes ============ -->
   <div class="card">
-    <p class="kicker">Card 3 · Closing the gap on volume alone</p>
     <h2 class="hed">It would take 53 to 77 more dishes a day</h2>
+    <p class="muted" style="margin-top:-6px; margin-bottom:14px;">Closing the gap through volume alone.</p>
     <p>To recover $480,000 a year through extra sales alone, the kitchen would need to push out, every single day:</p>
 
     <div class="dish-row">
@@ -522,8 +534,8 @@
 
   <!-- ============ Card 4: Menu price impact ============ -->
   <div class="card">
-    <p class="kicker">Card 4 · Closing the gap on price</p>
     <h2 class="hed">A $75 check becomes a $93 check</h2>
+    <p class="muted" style="margin-top:-6px; margin-bottom:14px;">Closing the gap through menu prices instead.</p>
     <p>If the gap is closed through menu prices instead of volume, the same dinner check would need to climb about 24% — before sales tax and tip.</p>
 
     <div class="check-grid">
@@ -545,8 +557,8 @@
 
   <!-- ============ Card 5: What restaurants would have to do ============ -->
   <div class="card">
-    <p class="kicker">Card 5 · The operator menu</p>
     <h2 class="hed">There is no single lever</h2>
+    <p class="muted" style="margin-top:-6px; margin-bottom:14px;">What operators would likely have to do.</p>
     <p>To preserve current margins, operators would likely need some combination of the following — none of which is costless to workers or guests:</p>
 
     <div class="options">
@@ -562,8 +574,8 @@
 
   <!-- ============ Card 6: Jobs at risk ============ -->
   <div class="card dark">
-    <p class="kicker">Card 6 · Jobs already moving in the wrong direction</p>
-    <h2 class="hed" style="color: var(--vc-white);">Before any new wage floor takes effect</h2>
+    <h2 class="hed" style="color: var(--vc-white);">Jobs are already moving in the wrong direction</h2>
+    <p class="muted" style="margin-top:-6px; margin-bottom:14px; color: var(--vc-periwinkle);">Before any new wage floor takes effect.</p>
 
     <div class="jobs">
       <div class="bignum">&#8722;7,900</div>
@@ -593,7 +605,7 @@
       </div>
     </details>
 
-    <p class="src">Sources: New York City Hospitality Alliance member surveys; Culinary Agents wage benchmarks; James Beard Foundation menu pricing survey; New York State Department of Labor, Current Employment Statistics for restaurants and other eating places in New York City.</p>
+    <p class="src">Sources: <a href="https://thenycalliance.org/" target="_blank" rel="noopener">New York City Hospitality Alliance</a> member surveys; <a href="https://culinaryagents.com/" target="_blank" rel="noopener">Culinary Agents</a> wage benchmarks; <a href="https://www.jamesbeard.org/" target="_blank" rel="noopener">James Beard Foundation</a> menu pricing survey; <a href="https://dol.ny.gov/labor-statistics-new-york-city-region" target="_blank" rel="noopener">New York State Department of Labor</a>, Current Employment Statistics for restaurants and other eating places in New York City.</p>
   </div>
 
 </div>
