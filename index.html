@@ -391,6 +391,60 @@
     margin: 14px 0 4px;
   }
 
+  /* ===== Section header + OR divider ===== */
+  .rtm .section-head {
+    border: 0;
+    padding: 18px 4px 6px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .rtm .section-head .kicker {
+    color: var(--vc-orange);
+    margin-bottom: 8px;
+  }
+  .rtm .section-head h3 {
+    font-family: var(--vc-font-sans);
+    font-weight: 900;
+    font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+    margin: 0 0 6px;
+    line-height: 1.2;
+  }
+  .rtm .section-head p {
+    font-size: 0.9rem;
+    color: var(--vc-charcoal);
+    margin: 0 auto;
+    max-width: 520px;
+  }
+  .rtm .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: -2px auto 16px;
+    max-width: 220px;
+    color: var(--vc-charcoal);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: var(--track-kicker);
+    text-transform: uppercase;
+  }
+  .rtm .or-divider::before,
+  .rtm .or-divider::after {
+    content: "";
+    flex: 1;
+    border-top: 1.5px solid var(--vc-black);
+  }
+  .rtm .path-label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: var(--track-kicker);
+    text-transform: uppercase;
+    color: var(--vc-white);
+    background: var(--vc-black);
+    padding: 4px 8px;
+    margin-bottom: 10px;
+  }
+
   /* ===== Source line ===== */
   .rtm .src {
     font-size: 0.78rem;
@@ -496,8 +550,16 @@
     <p class="muted">For an illustrative restaurant generating $2 million in annual revenue, the modeled $100,000 profit becomes a roughly $380,000 loss — a $480,000 change in the bottom line.</p>
   </div>
 
+  <!-- ============ Section header: ways to offset the gap ============ -->
+  <div class="section-head">
+    <p class="kicker">Three ways to offset the $480,000 — pick one, or mix</p>
+    <h3>The cards below are alternatives, not additive</h3>
+    <p>Each card shows what offsetting the modeled gap would require if a restaurant relied on that lever alone. In practice, operators would likely use some combination.</p>
+  </div>
+
   <!-- ============ Card 3: Closing the gap with dishes ============ -->
   <div class="card">
+    <span class="path-label">Path A · Volume only</span>
     <h2 class="hed">Offsetting the $480,000 through additional sales</h2>
     <p class="muted" style="margin-top:-6px; margin-bottom:14px;">Daily and annual additional orders required if the gap is offset by volume alone.</p>
     <p>Generating $480,000 in additional annual revenue would require selling, each day:</p>
@@ -533,8 +595,11 @@
     <p class="muted">These totals represent the additional orders required to fully offset the modeled $480,000 gap at the listed price points.</p>
   </div>
 
+  <div class="or-divider">or</div>
+
   <!-- ============ Card 4: Menu price impact ============ -->
   <div class="card">
+    <span class="path-label">Path B · Prices only</span>
     <h2 class="hed">Offsetting the gap through menu prices: $75 becomes $93</h2>
     <p class="muted" style="margin-top:-6px; margin-bottom:14px;">Required check size if the gap is offset by prices alone.</p>
     <p>If the gap is offset through menu prices alone, the same dinner check would rise about 24% — before sales tax and tip.</p>
@@ -556,11 +621,14 @@
     <p class="muted">In a <a href="https://www.jamesbeard.org/industrysupport" target="_blank" rel="noopener">James Beard Foundation</a> survey of independent restaurant operators, those that raised menu prices by more than 10% were the most likely to report expecting lower profits.</p>
   </div>
 
-  <!-- ============ Card 5: What restaurants would have to do ============ -->
+  <div class="or-divider">or</div>
+
+  <!-- ============ Card 5: Combination of levers ============ -->
   <div class="card">
-    <h2 class="hed">Operator responses identified in the analysis</h2>
-    <p class="muted" style="margin-top:-6px; margin-bottom:14px;">Adjustments operators could use, alone or in combination, to offset the modeled cost increase.</p>
-    <p>The analysis identifies the following potential responses:</p>
+    <span class="path-label">Path C · Some combination</span>
+    <h2 class="hed">A mix of operator responses</h2>
+    <p class="muted" style="margin-top:-6px; margin-bottom:14px;">Adjustments that could be used in combination to offset the modeled cost increase.</p>
+    <p>The analysis identifies the following potential responses, used alone or in combination:</p>
 
     <div class="options">
       <div class="opt"><span class="dot"></span>Raise menu prices</div>
