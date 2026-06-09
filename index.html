@@ -687,5 +687,26 @@
   </div>
 
 </div>
+
+<script>
+  // Embed mode: ?embed=1 zeroes body margin and posts the content height to the
+  // parent so a Ghost iframe can size to fit — no inner scrollbar, no clipping.
+  if (new URLSearchParams(location.search).get('embed') === '1') {
+    document.body.style.margin = '0';
+    var postHeight = function () {
+      var h = Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+      );
+      parent.postMessage({ type: 'vc-embed-height', id: 'restaurant-thin-margins', height: h }, '*');
+    };
+    window.addEventListener('load', postHeight);
+    window.addEventListener('resize', postHeight);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(postHeight);
+    // Fonts and the methodology toggle change height after load — re-measure briefly.
+    var n = 0, t = setInterval(function () { postHeight(); if (++n > 20) clearInterval(t); }, 300);
+    document.addEventListener('toggle', postHeight, true);
+  }
+</script>
 </body>
 </html>
